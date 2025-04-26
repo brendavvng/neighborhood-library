@@ -16,14 +16,10 @@ public class Book {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
+        this.isCheckedOut = false;
+        this.checkedOutTo = null; // initialize to null in the constructor, using null since no one has checked out book
 
-        // give these properties default values but dont set from the constructor
-        // set to false, default value since no one has checked out book yet
-        this.setCheckedOut(false);
-        this.setCheckedOutTo("");
     }
-
-
     // creating method to check out a book
     public void checkOut(String name) {
         // set checkedOut to true using setter

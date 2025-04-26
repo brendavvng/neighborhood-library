@@ -6,7 +6,10 @@ public class NeighborhoodLibraryApp {
 
     // declaring static variable "theBooks" belonging to "Book" class
     // [] = array, so "theBooks" will hold multiple "Book" objects
+    // 'static'  means this array belongs to the NeighborhoodLibraryApp class
     static Book[] theBooks = {
+            // creating new 'Book' objects and initializing 'theBooks' array with them
+            // each 'Book' object is created using the 'new Book()' constructor
             new Book(1,"12345", "Ready Player 1"),
             new Book(2,"56789", "Jurassic Park"),
             new Book(3,"89324", "Green Eggs and Ham"),
@@ -32,6 +35,7 @@ public class NeighborhoodLibraryApp {
     // initializing scanner to read user input
     static Scanner myScanner = new Scanner(System.in);
 
+    // main method, entry point for every application
     public static void main(String[] args) {
 
         // declaring variable appRunning to set its value to true
@@ -53,28 +57,33 @@ public class NeighborhoodLibraryApp {
                 // eat the newline
                 myScanner.nextLine();
 
-                // the user if they want to check out a book
+                // checking if user wants to check out a book
+                // return value is checked here
                 if (userBookChoice != -1) {
                     //Ask them their name
-                    System.out.println("What is your name?");
+                    System.out.print("\nPlease enter your name: ");
+                    // reading user input (their name) and storing it in the "usersName" variable
                     String usersName = myScanner.nextLine();
 
                     // checkout the book
+                    // calling the checkOut() method of the selected Book object
                     theBooks[userBookChoice].checkOut(usersName);
 
                 }
                     break;
                 case 2:
-                    System.out.println("The user wants to see the checked out books");
+                    System.out.println("\nThe user wants to see the checked out books");
                     // display the list of checked out books
-                    System.out.println("---Checked Out Books---");
+                    System.out.println("\n---Checked Out Books---");
                     // checking if any books are checked out
                     boolean checkedOutBooks = false;
 
                     //
                     for (Book book : theBooks) {
                         if (book.isCheckedOut()) {
-                            System.out.println("Title" + book.getTitle());
+                            // this prints out the checked out book info, title of book + person who rented
+                            System.out.println(book.getIsbn() + " - Title: " + book.getTitle() + ", rented by " + book.getCheckedOutTo());
+                            System.out.println("----------------------------------------");
                         }
                     }
 
@@ -84,11 +93,11 @@ public class NeighborhoodLibraryApp {
                     break;
                 case 3:
                     // user wants to exit app
-                    System.out.println("The user wants to leave");
+                    System.out.println("\nThe user wants to leave");
                     appRunning = false;
                     break;
                 default:
-                    System.out.println("Invalid Choice");
+                    System.out.println("\nInvalid Choice. Please pick a number between 1-3. ");
             }
         }
 
@@ -96,13 +105,14 @@ public class NeighborhoodLibraryApp {
 
     static int mainMenu(){
 
-        System.out.println("Welcome to the Neighborhood Library!\n");
+        System.out.println("\nWelcome to the Neighborhood Library App!\n");
 
         System.out.println("What would you like to do?");
-        System.out.println("----------------------------");
+        System.out.println("----------------------------------------");
         System.out.println("1: View available books");
         System.out.println("2: View checkout books");
         System.out.println("3: Exit the library");
+        System.out.print("Enter answer here: ");
 
         return myScanner.nextInt();
 
@@ -110,7 +120,7 @@ public class NeighborhoodLibraryApp {
 
     // creating a new method to view avail books
     static int viewAvailableBooks() {
-        System.out.println("These are the available books!\n");
+        System.out.println("\nThese are the available books!\n");
 
         // loop over the books and work with each book
         // index starts at 0,
@@ -118,30 +128,39 @@ public class NeighborhoodLibraryApp {
 
             // set the current book to a variable so we don't have to deal with "i" anymore
             Book currentBook = theBooks[i];
-
+            // calling the isCheckedOut method and checks if the value is equal to false
             if (currentBook.isCheckedOut() == false) {
-                System.out.println(i + ": " + currentBook.getTitle() + " - " + currentBook.getIsbn());
+                // increment + 1, so that the number starts from 1, not 0
+                System.out.println((i + 1) + ": " + currentBook.getTitle() + " - " + currentBook.getIsbn());
 
             }
 
         }
-
             // eats the random line
             myScanner.nextLine();
 
             // ask user if they would like to check out a book
-            System.out.println("\nWould you like to check out a book? (y/n)");
+            System.out.print("\nWould you like to check out a book? (y/n): ");
             String userSelection = myScanner.nextLine();
 
             // if user says yes, it asks which book
             if(userSelection.equalsIgnoreCase("y")){
-                System.out.println("Please enter the id of the book you want to check out");
-                return myScanner.nextInt();
+                System.out.print("\nPlease enter the id of the book you want to check out: ");
+                int bookNumber = myScanner.nextInt();
+                if(bookNumber > 0 && bookNumber <= theBooks.length) {
+                    return bookNumber - 1;
+                } else {
+                    System.out.println("\nInvalid book number.  Please try again!");
+                    return -1;
+                }
+
             }
 
-        //return -1 if no book selected, its easy to test for
+        //return -1 if no book selected , it's easy to test for
         return -1;
 
     }
 
 }
+
+
